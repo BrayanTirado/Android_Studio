@@ -1,0 +1,139 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Registrar Seguimiento</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- VISTA PRINCIPAL -->
+  <ng-container *ngIf="vistaActual === 'info'">
+    <ion-button fill="clear" color="dark" (click)="volverDashboard()">
+      ← Volver al Dashboard
+    </ion-button>
+
+    <h2>Último registro</h2>
+
+    <ion-card *ngIf="ultimo">
+      <ion-card-header>
+        <ion-card-title>{{ ultimo.accion }}</ion-card-title>
+        <ion-card-subtitle>{{ ultimo.fechaIntervencion }}</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <p><strong>Responsable:</strong> {{ ultimo.responsable }}</p>
+        <p><strong>Resultados:</strong> {{ ultimo.resultados }}</p>
+        <p><strong>Próxima revisión:</strong> {{ ultimo.proximaRevision }}</p>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngIf="!ultimo">
+      <ion-card-content>
+        No hay registros aún.
+      </ion-card-content>
+    </ion-card>
+
+    <ion-button expand="block" color="primary" (click)="nuevoRegistro()">Registrar nuevo</ion-button>
+    <ion-button expand="block" fill="outline" (click)="verHistorial()">Ver historial</ion-button>
+  </ng-container>
+
+  <!-- VISTA HISTORIAL -->
+  <ng-container *ngIf="vistaActual === 'historial'">
+    <ion-button fill="clear" color="dark" (click)="volverInfo()">← Volver</ion-button>
+    <h2>Historial de seguimientos</h2>
+
+    <ion-list *ngIf="historial.length > 0; else noHistorial">
+      <ion-item button *ngFor="let item of historial" (click)="verDetalle(item)">
+        <ion-label>
+          <h3>{{ item.accion }}</h3>
+          <p>{{ item.fechaIntervencion }}</p>
+          <p>{{ item.responsable }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+    <ng-template #noHistorial>
+      <p>No hay registros aún.</p>
+    </ng-template>
+  </ng-container>
+
+  <!-- VISTA DETALLE -->
+  <ng-container *ngIf="vistaActual === 'detalle'">
+    <ion-button fill="clear" color="dark" (click)="verHistorial()">← Volver al Historial</ion-button>
+    <h2>Detalle del registro</h2>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>{{ registroDetalle.accion }}</ion-card-title>
+        <ion-card-subtitle>{{ registroDetalle.fechaIntervencion }}</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <p><strong>Responsable:</strong> {{ registroDetalle.responsable }}</p>
+        <p><strong>Resultados observados:</strong> {{ registroDetalle.resultados }}</p>
+        <p><strong>Próxima revisión:</strong> {{ registroDetalle.proximaRevision }}</p>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+
+  <!-- VISTA NUEVO REGISTRO -->
+  <ng-container *ngIf="vistaActual === 'nuevo'">
+    <h2>Registrar Seguimiento</h2>
+
+    <!-- Acción tomada -->
+    <ion-item>
+      <ion-label>Acción tomada</ion-label>
+      <ion-select [(ngModel)]="form.accion" placeholder="Seleccione">
+        <ion-select-option value="Ninguna">Ninguna (si apenas se detecta)</ion-select-option>
+        <ion-select-option value="Aplicación de fertilizante">Aplicación de fertilizante</ion-select-option>
+        <ion-select-option value="Control de plagas">Control de plagas</ion-select-option>
+        <ion-select-option value="Aumento/disminución del riego">Aumento/disminución del riego</ion-select-option>
+        <ion-select-option value="Corrección del suelo">Corrección del suelo</ion-select-option>
+        <ion-select-option value="Poda o limpieza">Poda o limpieza</ion-select-option>
+        <ion-select-option value="Otra acción">Otra acción</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!-- Responsable de la acción -->
+    <ion-item>
+      <ion-label position="floating">Responsable de la acción</ion-label>
+      <ion-input [(ngModel)]="form.responsable" placeholder="Nombre del operario o técnico"></ion-input>
+    </ion-item>
+
+    <!-- Fecha de intervención -->
+    <ion-item>
+      <ion-label position="stacked">Fecha de intervención</ion-label>
+      <ion-datetime
+        [(ngModel)]="form.fechaIntervencion"
+        presentation="date"
+        display-format="DD/MM/YYYY"
+        placeholder="Selecciona la fecha">
+      </ion-datetime>
+    </ion-item>
+
+    <!-- Resultados observados -->
+    <ion-item>
+      <ion-label position="stacked">Resultados observados</ion-label>
+      <ion-textarea auto-grow="true" placeholder="¿Mejoró? ¿Empeoró? ¿Se mantiene igual?" [(ngModel)]="form.resultados"></ion-textarea>
+    </ion-item>
+
+    <!-- Próxima revisión -->
+    <ion-item>
+      <ion-label position="stacked">Próxima revisión</ion-label>
+      <ion-datetime
+        [(ngModel)]="form.proximaRevision"
+        presentation="date"
+        display-format="DD/MM/YYYY"
+        placeholder="Selecciona la fecha">
+      </ion-datetime>
+    </ion-item>
+
+    <!-- Botón Guardar -->
+    <ion-button expand="block" class="ion-margin-top" (click)="guardar()">Guardar seguimiento</ion-button>
+
+    <!-- BOTÓN CANCELAR -->
+    <ion-button fill="clear" color="dark" (click)="cancelar()">
+      ← Cancelar
+    </ion-button>
+
+  </ng-container>
+
+</ion-content>

@@ -1,0 +1,23 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Agropecuarios</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="home-content">
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <img src="https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=800" alt="Campo de caña de azúcar" class="hero-image">
+    <div class="hero-overlay">
+      <h1 class="hero-title">Sistema de Gestión Agrícola</h1>
+      <p class="hero-subtitle">Cultivo y siembra de caña de azúcar</p>
+    </div>
+  </div>
+
+
+  <!-- Auth Buttons -->
+  <div class="auth-buttons">
+    <ion-button expand="block" color="primary" (click)="iniciarsesion()">Iniciar Sesión</ion-button>
+    <ion-button expand="block" fill="outline" color="secondary" (click)="registrarse()">Registrarse</ion-button>
+  </div>
+</ion-content>

@@ -1,0 +1,101 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Bienvenido</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Search Bar -->
+  <div class="search-container">
+    <ion-searchbar
+      placeholder="Buscar módulos..."
+      (ionInput)="onSearchInput($event)"
+      (ionSearch)="onSearchSubmit()"
+      class="search-bar">
+    </ion-searchbar>
+
+    <!-- Resultados de búsqueda -->
+    <div class="search-results" *ngIf="searchResults.length > 0">
+      <ion-list>
+        <ion-item button *ngFor="let result of searchResults" (click)="navigateToResult(result)">
+          <ion-label>
+            <h3>{{ result.title }}</h3>
+            <p>{{ result.description }}</p>
+          </ion-label>
+          <ion-icon name="chevron-forward" slot="end"></ion-icon>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
+
+  <!-- Card 1: Riesgos -->
+  <ion-card (click)="irAlModulo('riesgos-info')">
+    <img alt="Riesgos agrícolas" src="https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=400" />
+
+    <ion-card-header>
+      <ion-card-title style="color: #000000;">Riesgos</ion-card-title>
+      <ion-card-subtitle style="color: #000000;">Evaluación del estado del cultivo</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content style="color: #000000;">
+      Accede a la gestión de riesgos para registrar, consultar y actualizar información.
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Card 2: Condiciones Ambientales -->
+  <ion-card (click)="irAlModulo('condiciones-ambientales')">
+    <img alt="Condiciones ambientales" src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=400" />
+
+    <ion-card-header>
+      <ion-card-title style="color: #000000;">Condiciones Ambientales</ion-card-title>
+      <ion-card-subtitle style="color: #000000;">Clima, suelo y estado fenológico</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content style="color: #000000;">
+      Consulta o registra los datos ambientales actuales del cultivo.
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Card 3: Seguimiento -->
+  <ion-card (click)="irAlModulo('seguimiento')">
+    <img alt="Seguimiento de cultivos" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400" />
+
+    <ion-card-header>
+      <ion-card-title style="color: #000000;">Seguimiento</ion-card-title>
+      <ion-card-subtitle style="color: #000000;">Acciones tomadas y resultados</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content style="color: #000000;">
+      Registra intervenciones, responsables y próximos seguimientos.
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Card 4: Evidencia -->
+  <ion-card (click)="irAlModulo('evidencia')">
+    <img alt="Evidencia fotográfica" src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400" />
+
+    <ion-card-header>
+      <ion-card-title style="color: #000000;">Evidencia</ion-card-title>
+      <ion-card-subtitle style="color: #000000;">Fotografías y registros visuales</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content style="color: #000000;">
+      Captura o importa fotos con descripciones y fecha automática.
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Card 5: Gráficos -->
+  <ion-card (click)="irAlModulo('graficos')">
+    <img alt="Gráficos de datos agrícolas" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400" />
+
+    <ion-card-header>
+      <ion-card-title style="color: #000000;">Gráficos</ion-card-title>
+      <ion-card-subtitle style="color: #000000;">Visualización de datos de seguimiento</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content style="color: #000000;">
+      Visualiza gráficos dinámicos con el historial de seguimientos y estadísticas.
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

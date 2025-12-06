@@ -1,0 +1,7 @@
+{
+  "name": "CRUD-maria",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

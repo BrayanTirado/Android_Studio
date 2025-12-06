@@ -1,0 +1,69 @@
+ion-item {
+  --background: var(--ion-color-light);
+  --border-color: var(--ion-color-medium);
+  --color: var(--ion-color-dark);
+  margin-bottom: 12px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-light);
+}
+
+ion-datetime {
+  --background: var(--ion-color-light);
+  --border-color: var(--ion-color-medium);
+  --color: var(--ion-color-dark);
+  margin-top: 8px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-light);
+}
+
+.tracking-card {
+  background: var(--ion-color-light);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  box-shadow: var(--shadow-light);
+  margin-bottom: 20px;
+}
+
+.tracking-title {
+  color: var(--ion-color-dark);
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 10px 0;
+}
+
+.tracking-description {
+  color: var(--ion-color-medium);
+  font-size: 0.95rem;
+  margin: 0 0 15px 0;
+  line-height: 1.5;
+}
+
+.tracking-status {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: var(--border-radius);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.tracking-status.active {
+  background: var(--ion-color-success);
+  color: var(--ion-color-success-contrast);
+}
+
+.tracking-status.inactive {
+  background: var(--ion-color-medium);
+  color: var(--ion-color-light);
+}
+
+.tracking-status.pending {
+  background: var(--ion-color-warning);
+  color: var(--ion-color-warning-contrast);
+}
+
+@media (max-width: 768px) {
+  .tracking-card {
+    padding: 15px;
+  }
+}

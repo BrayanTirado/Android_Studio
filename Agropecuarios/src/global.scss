@@ -1,0 +1,157 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Importar fuente Roboto */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+/* Importar variables de tema */
+@import "theme/variables";
+
+/* Core CSS required for Ionic components to work properly */
+@import "@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import "@ionic/angular/css/display.css";
+
+/* Optional CSS utils that can be commented out */
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+
+/**
+ * Ionic Dark Mode
+ * -----------------------------------------------------
+ * For more info, please see:
+ * https://ionicframework.com/docs/theming/dark-mode
+ */
+
+/* @import "@ionic/angular/css/palettes/dark.always.css"; */
+/* @import "@ionic/angular/css/palettes/dark.class.css"; */
+@import '@ionic/angular/css/palettes/dark.system.css';
+
+/* Estilos globales base */
+* {
+  font-family: var(--ion-font-family);
+}
+
+ion-content {
+  --background: var(--ion-color-light);
+}
+
+ion-header, ion-footer {
+  --background: var(--ion-color-primary);
+  --color: var(--ion-color-primary-contrast);
+}
+
+ion-toolbar {
+  --background: transparent;
+  --color: var(--ion-color-primary-contrast);
+}
+
+ion-button {
+  --border-radius: var(--border-radius);
+  --box-shadow: var(--shadow-light);
+  --background: var(--ion-color-primary);
+  --background-hover: var(--ion-color-primary-shade);
+  --color: var(--ion-color-primary-contrast);
+  font-weight: 600;
+  text-transform: none;
+}
+
+ion-item {
+  --border-radius: var(--border-radius);
+  --background: var(--ion-color-light);
+  --color: var(--ion-color-dark);
+  --border-color: var(--ion-color-medium);
+  margin-bottom: 8px;
+}
+
+ion-input, ion-textarea, ion-select {
+  --color: var(--ion-color-dark);
+  --placeholder-color: var(--ion-color-medium);
+  --background: var(--ion-color-light);
+  --border-radius: var(--border-radius);
+}
+
+ion-datetime {
+  --color: var(--ion-color-dark);
+  --placeholder-color: var(--ion-color-medium);
+  --background: var(--ion-color-light);
+  --border-radius: var(--border-radius);
+  --border-color: var(--ion-color-medium);
+  --title-color: var(--ion-color-dark);
+  --month-year-color: var(--ion-color-dark);
+  --day-color: var(--ion-color-dark);
+  --weekday-color: var(--ion-color-dark);
+}
+
+ion-datetime-button {
+  --color: var(--ion-color-dark);
+  --background: var(--ion-color-light);
+  --background-hover: var(--ion-color-light-tint);
+  --border-radius: var(--border-radius);
+  --border-color: var(--ion-color-medium);
+}
+
+ion-datetime-button::part(native) {
+  color: var(--ion-color-dark);
+}
+
+ion-select {
+  --placeholder-color: var(--ion-color-medium);
+}
+
+ion-select::part(placeholder) {
+  color: var(--ion-color-medium);
+  opacity: 0.7;
+}
+
+ion-select::part(text) {
+  color: var(--ion-color-dark);
+}
+
+ion-select::part(icon) {
+  color: var(--ion-color-secondary);
+}
+
+ion-card {
+  --background: var(--ion-color-light);
+  --color: var(--ion-color-dark);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-light);
+  margin: 16px 0;
+}
+
+ion-list {
+  background: transparent;
+}
+
+ion-list-header {
+  --color: var(--ion-color-dark);
+  font-weight: 600;
+  font-size: 18px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #000000;
+  font-weight: 700;
+}
+
+p {
+  color: #000000;
+  line-height: 1.6;
+  font-size: 1rem;
+}

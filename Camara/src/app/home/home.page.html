@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Funciones del Dispositivo</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- Botón principal: tomar foto solo si no hay imagen -->
+  <ion-button *ngIf="!imageUrl" expand="full" (click)="takePhoto()">Tomar Foto</ion-button>
+
+  <!-- Botón para volver a tomar foto si ya hay imagen -->
+  <ion-button *ngIf="imageUrl" expand="full" color="secondary" (click)="retakePhoto()" style="margin-top: 10px;">
+    Volver a tomar foto
+  </ion-button>
+
+  <!-- Mostrar la imagen tomada -->
+  <img *ngIf="imageUrl" [src]="imageUrl" alt="Foto tomada" style="width: 100%; margin-top: 20px;">
+
+  <hr>
+
+  <!-- Mostrar ubicación en Google Maps -->
+  <p *ngIf="googleMapsUrl" style="margin-top: 10px;">
+    Ubicación de la foto: 
+    <a [href]="googleMapsUrl" target="_blank" (click)="toggleCoords()">
+      Ver en Google Maps
+    </a>
+  </p>
+
+  <!-- Mostrar coordenadas solo al hacer clic en el enlace -->
+  <p *ngIf="showCoords && latitude && longitude" style="margin-top: 5px;">
+    <strong>Latitud:</strong> {{ latitude }}<br>
+    <strong>Longitud:</strong> {{ longitude }}
+  </p>
+
+  <!-- Si no hay ubicación y ya se intentó obtenerla -->
+ <p *ngIf="imageUrl && !locationChecked" style="margin-top: 10px; color: gray;">
+  ⏳ Obteniendo ubicación...
+</p>
+
+<p *ngIf="imageUrl && !googleMapsUrl && locationChecked" style="margin-top: 10px; color: red;">
+  ❌ Esta foto no contiene información de ubicación.
+</p>
+
+
+  <!-- Botón para volver al inicio -->
+  <ion-button *ngIf="imageUrl" expand="full" color="medium" (click)="goHome()" style="margin-top: 10px;">
+    Volver al inicio
+  </ion-button>
+
+</ion-content>

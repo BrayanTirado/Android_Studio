@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Gráficos de Seguimiento</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Gráficos</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="chart-container">
+    <h2>Historial de Seguimientos</h2>
+    <div class="chart-wrapper">
+      <canvas #chartCanvas width="400" height="200"></canvas>
+    </div>
+  </div>
+
+  <div class="chart-controls">
+    <ion-button fill="outline" (click)="loadPreviousData()">Cargar Datos Anteriores</ion-button>
+    <ion-button fill="outline" (click)="refreshData()">Actualizar</ion-button>
+  </div>
+</ion-content>

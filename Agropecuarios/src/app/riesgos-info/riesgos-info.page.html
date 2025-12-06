@@ -1,0 +1,167 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Registrar Riesgo</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- VISTA PRINCIPAL -->
+  <ng-container *ngIf="vistaActual === 'info'">
+    <ion-button fill="clear" color="dark" (click)="volverDashboard()">
+      ← Volver al Dashboard
+    </ion-button>
+
+    <h2>Último registro</h2>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>{{ ultimo?.nivel }}</ion-card-title>
+        <ion-card-subtitle>{{ ultimo?.fecha }}</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        {{ ultimo?.descripcion }}
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Gráfico de distribución de riesgos -->
+    <div class="chart-container">
+      <h3>Distribución de Riesgos por Tipo</h3>
+      <div class="chart-wrapper">
+        <canvas #riesgosChart width="400" height="200"></canvas>
+      </div>
+    </div>
+
+    <ion-button expand="block" color="primary" (click)="nuevoRegistro()">Registrar nuevo</ion-button>
+    <ion-button expand="block" fill="outline" (click)="verHistorial()">Ver historial</ion-button>
+  </ng-container>
+
+  <!-- VISTA HISTORIAL -->
+  <ng-container *ngIf="vistaActual === 'historial'">
+    <ion-button fill="clear" color="dark" (click)="volverInfo()">← Volver</ion-button>
+    <h2>Historial de riesgos</h2>
+
+    <ion-list *ngIf="historial.length > 0; else noHistorial">
+      <ion-item button *ngFor="let item of historial" (click)="verDetalle(item)">
+        <ion-label>
+          <h3>{{ item.nivel }}</h3>
+          <p>{{ item.fecha }}</p>
+          <p>{{ item.descripcion }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+    <ng-template #noHistorial>
+      <p>No hay registros aún.</p>
+    </ng-template>
+  </ng-container>
+
+  <!-- VISTA DETALLE -->
+  <ng-container *ngIf="vistaActual === 'detalle'">
+    <ion-button fill="clear" color="dark" (click)="verHistorial()">← Volver al Historial</ion-button>
+    <h2>Detalle del registro</h2>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>{{ registroDetalle.nivel }}</ion-card-title>
+        <ion-card-subtitle>{{ registroDetalle.fecha }}</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <p><strong>Tipo:</strong> {{ registroDetalle.tipo }}</p>
+        <p><strong>Descripción:</strong> {{ registroDetalle.descripcion }}</p>
+        <p><strong>% Área afectada:</strong> {{ registroDetalle.area }}</p>
+        <p><strong>Departamento:</strong> {{ registroDetalle.departamento }}</p>
+        <p><strong>Municipio:</strong> {{ registroDetalle.municipio }}</p>
+        <p><strong>Lote:</strong> {{ registroDetalle.lote }}</p>
+        <p><strong>Coordenadas:</strong> {{ registroDetalle.coordenadas }}</p>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+
+  <!-- VISTA NUEVO REGISTRO -->
+  <ng-container *ngIf="vistaActual === 'nuevo'">
+    <h2>Registrar Riesgo</h2>
+
+    <!-- Tipo -->
+    <ion-item>
+      <ion-label>Tipo de riesgo</ion-label>
+      <ion-select placeholder="Seleccione una opción" [(ngModel)]="form.tipo">
+        <ion-select-option value="climatico">Climático</ion-select-option>
+        <ion-select-option value="plagas">Plagas</ion-select-option>
+        <ion-select-option value="hidrico">Hídrico</ion-select-option>
+        <ion-select-option value="suelos">Suelos</ion-select-option>
+        <ion-select-option value="operacional">Operacional</ion-select-option>
+        <ion-select-option value="financiero">Financiero</ion-select-option>
+        <ion-select-option value="otros">Otros</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!-- Severidad -->
+    <ion-item>
+      <ion-label>Severidad</ion-label>
+      <ion-select placeholder="Seleccione" [(ngModel)]="form.severidad">
+        <ion-select-option value="bajo">Bajo</ion-select-option>
+        <ion-select-option value="moderado">Moderado</ion-select-option>
+        <ion-select-option value="alto">Alto</ion-select-option>
+        <ion-select-option value="critico">Crítico</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!-- Descripción -->
+    <ion-item>
+      <ion-label position="floating">Descripción del riesgo</ion-label>
+      <ion-textarea [(ngModel)]="form.descripcion"></ion-textarea>
+    </ion-item>
+
+    <!-- Área afectada -->
+    <ion-item>
+      <ion-label position="floating">% Área afectada</ion-label>
+      <ion-input type="number" [(ngModel)]="form.area"></ion-input>
+    </ion-item>
+
+    <!-- Departamento -->
+    <ion-item>
+      <ion-label>Departamento</ion-label>
+      <ion-select placeholder="Seleccione" [(ngModel)]="form.departamento">
+        <ion-select-option *ngFor="let dep of departamentos" [value]="dep">{{ dep }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!-- Municipio -->
+    <ion-item>
+      <ion-label>Municipio</ion-label>
+      <ion-select placeholder="Seleccione" [(ngModel)]="form.municipio">
+        <ion-select-option *ngFor="let mun of municipiosFiltrados" [value]="mun">{{ mun }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!-- Lote / Parcela -->
+    <ion-item>
+      <ion-label position="floating">Lote / Parcela</ion-label>
+      <ion-input [(ngModel)]="form.lote"></ion-input>
+    </ion-item>
+
+    <!-- Coordenadas -->
+    <ion-item>
+      <ion-label position="floating">Coordenadas (opcional)</ion-label>
+      <ion-input [(ngModel)]="form.coordenadas"></ion-input>
+    </ion-item>
+
+    <!-- Fecha -->
+    <ion-item>
+      <ion-label position="stacked">Fecha</ion-label>
+      <ion-datetime
+        [(ngModel)]="form.fecha"
+        presentation="date"
+        display-format="DD/MM/YYYY"
+        placeholder="Selecciona la fecha">
+      </ion-datetime>
+    </ion-item>
+
+
+    <ion-button expand="block" class="ion-margin-top" (click)="guardar()">Guardar riesgo</ion-button>
+    <ion-button fill="clear" color="dark" (click)="cancelar()">← Cancelar</ion-button>
+
+  </ng-container>
+
+</ion-content>

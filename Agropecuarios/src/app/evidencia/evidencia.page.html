@@ -1,0 +1,133 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Registrar Evidencia</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- VISTA PRINCIPAL -->
+  <ng-container *ngIf="vistaActual === 'info'">
+    <ion-button fill="clear" color="dark" (click)="volverDashboard()">
+      ← Volver al Dashboard
+    </ion-button>
+
+    <h2>Última evidencia</h2>
+
+    <ion-card *ngIf="ultimo">
+      <ion-img [src]="ultimo.imagen" alt="Evidencia"></ion-img>
+      <ion-card-header>
+        <ion-card-title>{{ ultimo.fecha }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>{{ ultimo.descripcion }}</p>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngIf="!ultimo">
+      <ion-card-content>
+        No hay evidencias aún.
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Gráfico de evidencias por fecha -->
+    <div class="chart-container">
+      <h3>Evidencias Registradas por Fecha</h3>
+      <div class="chart-wrapper">
+        <canvas #evidenciaChart width="400" height="200"></canvas>
+      </div>
+    </div>
+
+    <ion-button expand="block" color="primary" (click)="nuevoRegistro()">Capturar evidencia</ion-button>
+    <ion-button expand="block" fill="outline" (click)="verHistorial()">Ver historial</ion-button>
+  </ng-container>
+
+  <!-- VISTA HISTORIAL -->
+  <ng-container *ngIf="vistaActual === 'historial'">
+    <ion-button fill="clear" color="dark" (click)="volverInfo()">← Volver</ion-button>
+    <h2>Historial de evidencias</h2>
+
+    <ion-list *ngIf="historial.length > 0; else noHistorial">
+      <ion-item button *ngFor="let item of historial" (click)="verDetalle(item)">
+        <ion-thumbnail slot="start">
+          <ion-img [src]="item.imagen"></ion-img>
+        </ion-thumbnail>
+        <ion-label>
+          <h3>{{ item.fecha }}</h3>
+          <p>{{ item.descripcion }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+    <ng-template #noHistorial>
+      <p>No hay evidencias aún.</p>
+    </ng-template>
+  </ng-container>
+
+  <!-- VISTA DETALLE -->
+  <ng-container *ngIf="vistaActual === 'detalle'">
+    <ion-button fill="clear" color="dark" (click)="verHistorial()">← Volver al Historial</ion-button>
+    <h2>Detalle de la evidencia</h2>
+
+    <ion-card *ngIf="registroDetalle">
+      <ion-img [src]="registroDetalle.imagen" alt="Evidencia"></ion-img>
+      <ion-card-header>
+        <ion-card-title>{{ registroDetalle.fecha }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>{{ registroDetalle.descripcion }}</p>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+
+  <!-- VISTA NUEVO REGISTRO -->
+  <ng-container *ngIf="vistaActual === 'nuevo'">
+    <h2>Capturar Evidencia</h2>
+
+    <!-- Imagen -->
+    <div *ngIf="form.imagen" style="text-align: center; margin-bottom: 20px;">
+      <ion-img [src]="form.imagen" alt="Vista previa" style="max-width: 100%; height: auto;"></ion-img>
+    </div>
+
+    <!-- Botones -->
+    <ion-button expand="block" color="primary" (click)="tomarFoto()" style="margin-bottom: 10px;">
+      <ion-icon name="camera" slot="start"></ion-icon>
+      Tomar Foto
+    </ion-button>
+
+    <!-- Overaly / Cámara en vivo para captura desde navegador -->
+    <div *ngIf="cameraActive" class="camera-overlay">
+      <video #video class="camera-video" autoplay playsinline></video>
+      <div class="camera-controls">
+        <ion-button color="light" (click)="cancelarCamara()">Cancelar</ion-button>
+        <ion-button color="primary" (click)="captureFromCamera()">Tomar</ion-button>
+      </div>
+    </div>
+
+    <ion-button expand="block" color="secondary" (click)="importarFoto()" style="margin-bottom: 20px;">
+      <ion-icon name="images" slot="start"></ion-icon>
+      Importar de Galería
+    </ion-button>
+
+    <!-- Descripción -->
+    <ion-item>
+      <ion-label position="stacked">Descripción</ion-label>
+      <ion-textarea auto-grow="true" placeholder="Describe la evidencia..." [(ngModel)]="form.descripcion"></ion-textarea>
+    </ion-item>
+
+    <!-- Fecha automática -->
+    <ion-item>
+      <ion-label>Fecha de captura</ion-label>
+      <ion-input readonly [value]="currentDate"></ion-input>
+    </ion-item>
+
+    <!-- Botón Guardar -->
+    <ion-button expand="block" class="ion-margin-top" (click)="guardar()">Guardar evidencia</ion-button>
+
+    <!-- BOTÓN CANCELAR -->
+    <ion-button fill="clear" color="dark" (click)="cancelar()">
+      ← Cancelar
+    </ion-button>
+  </ng-container>
+
+</ion-content>

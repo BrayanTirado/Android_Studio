@@ -1,0 +1,193 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Registrar Condiciones Ambientales</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- VISTA PRINCIPAL -->
+  <ng-container *ngIf="vistaActual === 'info'">
+    <ion-button fill="clear" color="dark" (click)="volverDashboard()">
+      ← Volver al Dashboard
+    </ion-button>
+
+    <h2>Último registro</h2>
+
+    <ion-card *ngIf="ultimo">
+      <ion-card-header>
+        <ion-card-title>{{ ultimo.clima | titlecase }}</ion-card-title>
+        <ion-card-subtitle>{{ ultimo.fecha }}</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <p><strong>Fenología:</strong> {{ ultimo.fenologia }}</p>
+        <p><strong>Temperatura:</strong> {{ ultimo.temperatura }}</p>
+        <p><strong>Humedad suelo:</strong> {{ ultimo.humedadSuelo }}</p>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngIf="!ultimo">
+      <ion-card-content>
+        No hay registros aún.
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Gráfico de tendencias ambientales -->
+    <div class="chart-container">
+      <h3>Tendencias de Condiciones Ambientales</h3>
+      <div class="chart-wrapper">
+        <canvas #ambientalChart width="400" height="200"></canvas>
+      </div>
+    </div>
+
+    <ion-button expand="block" color="primary" (click)="nuevoRegistro()">Registrar nuevo</ion-button>
+    <ion-button expand="block" fill="outline" (click)="verHistorial()">Ver historial</ion-button>
+  </ng-container>
+
+  <!-- VISTA HISTORIAL -->
+  <ng-container *ngIf="vistaActual === 'historial'">
+    <ion-button fill="clear" color="dark" (click)="volverInfo()">← Volver</ion-button>
+    <h2>Historial de condiciones ambientales</h2>
+
+    <ion-list *ngIf="historial.length > 0; else noHistorial">
+      <ion-item button *ngFor="let item of historial" (click)="verDetalle(item)">
+        <ion-label>
+          <h3>{{ item.clima | titlecase }}</h3>
+          <p>{{ item.fecha }}</p>
+          <p>{{ item.fenologia }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+    <ng-template #noHistorial>
+      <p>No hay registros aún.</p>
+    </ng-template>
+  </ng-container>
+
+  <!-- VISTA DETALLE -->
+  <ng-container *ngIf="vistaActual === 'detalle'">
+    <ion-button fill="clear" color="dark" (click)="verHistorial()">← Volver al Historial</ion-button>
+    <h2>Detalle del registro</h2>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>{{ registroDetalle.clima | titlecase }}</ion-card-title>
+        <ion-card-subtitle>{{ registroDetalle.fecha }}</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <p><strong>Temperatura:</strong> {{ registroDetalle.temperatura }}</p>
+        <p><strong>Humedad ambiente:</strong> {{ registroDetalle.humedadAmbiente }}</p>
+        <p><strong>Viento:</strong> {{ registroDetalle.viento }}</p>
+        <p><strong>Humedad suelo:</strong> {{ registroDetalle.humedadSuelo }}</p>
+        <p><strong>Textura suelo:</strong> {{ registroDetalle.texturaSuelo }}</p>
+        <p><strong>Fenología:</strong> {{ registroDetalle.fenologia }}</p>
+        <p><strong>Observaciones:</strong> {{ registroDetalle.observacionesSuelo }}</p>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+
+  <!-- VISTA NUEVO REGISTRO -->
+  <ng-container *ngIf="vistaActual === 'nuevo'">
+    <h2>Registrar Condiciones Ambientales</h2>
+
+    <!-- Fecha -->
+    <ion-item>
+      <ion-label position="stacked">Fecha</ion-label>
+      <ion-datetime
+        [(ngModel)]="form.fecha"
+        presentation="date"
+        display-format="DD/MM/YYYY"
+        placeholder="Selecciona la fecha">
+      </ion-datetime>
+    </ion-item>
+
+    <!-- Temperatura -->
+    <ion-item>
+      <ion-label>Temperatura</ion-label>
+      <ion-select [(ngModel)]="form.temperatura">
+        <ion-select-option value="caliente">Caliente</ion-select-option>
+        <ion-select-option value="templado">Templado</ion-select-option>
+        <ion-select-option value="frio">Frío</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!-- Humedad del aire -->
+    <ion-item>
+      <ion-label>Humedad del aire</ion-label>
+      <ion-select [(ngModel)]="form.humedadAmbiente">
+        <ion-select-option value="bajita">Bajita</ion-select-option>
+        <ion-select-option value="media">Media</ion-select-option>
+        <ion-select-option value="alta">Alta</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!-- Viento -->
+    <ion-item>
+      <ion-label>Viento</ion-label>
+      <ion-select [(ngModel)]="form.viento">
+        <ion-select-option value="suave">Suave</ion-select-option>
+        <ion-select-option value="normal">Normal</ion-select-option>
+        <ion-select-option value="fuerte">Fuerte</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!-- Clima del día -->
+    <ion-item>
+      <ion-label>Clima del día</ion-label>
+      <ion-select [(ngModel)]="form.clima">
+        <ion-select-option value="seco">Seco</ion-select-option>
+        <ion-select-option value="lloviendo">Lloviendo</ion-select-option>
+        <ion-select-option value="nublado">Nublado</ion-select-option>
+        <ion-select-option value="tormenta">Tormenta</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!-- Humedad del suelo -->
+    <ion-item>
+      <ion-label>Humedad del suelo</ion-label>
+      <ion-select [(ngModel)]="form.humedadSuelo">
+        <ion-select-option value="seco">Seco</ion-select-option>
+        <ion-select-option value="normal">Normal</ion-select-option>
+        <ion-select-option value="mojado">Mojado</ion-select-option>
+        <ion-select-option value="muy mojado">Muy mojado</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!-- Suelo visto -->
+    <ion-item>
+      <ion-label>Suelo visto</ion-label>
+      <ion-select [(ngModel)]="form.texturaSuelo">
+        <ion-select-option value="duro">Duro</ion-select-option>
+        <ion-select-option value="normal">Normal</ion-select-option>
+        <ion-select-option value="suave">Suave</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!-- Observaciones visibles -->
+    <ion-item>
+      <ion-label position="stacked">Observaciones visibles</ion-label>
+      <ion-textarea auto-grow="true" placeholder="Encharcado, rajado..." [(ngModel)]="form.observacionesSuelo"></ion-textarea>
+    </ion-item>
+
+    <!-- Etapa de la caña -->
+    <ion-item>
+      <ion-label>Etapa de la caña</ion-label>
+      <ion-select [(ngModel)]="form.fenologia">
+        <ion-select-option value="chiquita">Chiquita</ion-select-option>
+        <ion-select-option value="creciendo">En crecimiento</ion-select-option>
+        <ion-select-option value="grande">Grande</ion-select-option>
+        <ion-select-option value="lista">Lista pa' cortar</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!-- Botón Guardar -->
+    <ion-button expand="block" class="ion-margin-top" (click)="guardar()">Guardar condiciones ambientales</ion-button>
+
+    <!-- BOTÓN CANCELAR -->
+    <ion-button fill="clear" color="dark" (click)="cancelar()">
+      ← Cancelar
+    </ion-button>
+
+  </ng-container>
+
+</ion-content>

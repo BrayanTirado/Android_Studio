@@ -1,0 +1,97 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Registrar Riesgo</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- Tipo de riesgo -->
+  <ion-item>
+    <ion-label>Tipo de riesgo</ion-label>
+    <ion-select placeholder="Seleccione una opción" [(ngModel)]="form.tipo">
+      <ion-select-option value="climatico">Climático</ion-select-option>
+      <ion-select-option value="plagas">Plagas</ion-select-option>
+      <ion-select-option value="hidrico">Hídrico</ion-select-option>
+      <ion-select-option value="suelos">Suelos</ion-select-option>
+      <ion-select-option value="operacional">Operacional</ion-select-option>
+      <ion-select-option value="financiero">Financiero</ion-select-option>
+      <ion-select-option value="otros">Otros</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <!-- Severidad -->
+  <ion-item>
+    <ion-label>Severidad</ion-label>
+    <ion-select placeholder="Seleccione" [(ngModel)]="form.severidad">
+      <ion-select-option value="bajo">Bajo</ion-select-option>
+      <ion-select-option value="moderado">Moderado</ion-select-option>
+      <ion-select-option value="alto">Alto</ion-select-option>
+      <ion-select-option value="critico">Crítico</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <!-- Descripción -->
+  <ion-item>
+    <ion-label position="floating">Descripción del riesgo</ion-label>
+    <ion-textarea [(ngModel)]="form.descripcion"></ion-textarea>
+  </ion-item>
+
+  <!-- Área afectada -->
+  <ion-item>
+    <ion-label position="floating">% Área afectada</ion-label>
+    <ion-input type="number" [(ngModel)]="form.area"></ion-input>
+  </ion-item>
+
+  <!-- Departamento -->
+  <ion-item>
+    <ion-label>Departamento</ion-label>
+    <ion-select placeholder="Seleccione" [(ngModel)]="form.departamento">
+      <ion-select-option *ngFor="let dep of departamentos" [value]="dep">{{ dep }}</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <!-- Municipio según Departamento -->
+  <ion-item>
+    <ion-label>Municipio</ion-label>
+    <ion-select placeholder="Seleccione" [(ngModel)]="form.municipio">
+      <ion-select-option *ngFor="let mun of municipiosFiltrados" [value]="mun">{{ mun }}</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <!-- Lote / Parcela -->
+  <ion-item>
+    <ion-label position="floating">Lote / Parcela</ion-label>
+    <ion-input [(ngModel)]="form.lote"></ion-input>
+  </ion-item>
+
+  <!-- Coordenadas -->
+  <ion-item>
+    <ion-label position="floating">Coordenadas (opcional)</ion-label>
+    <ion-input [(ngModel)]="form.coordenadas"></ion-input>
+  </ion-item>
+
+  <!-- Fecha con ícono compacto -->
+  <ion-item>
+    <ion-label position="stacked">Fecha</ion-label>
+    <ion-datetime-button datetime="fecha" style="--color: #000000;">
+      <ion-datetime
+        id="fecha"
+        [(ngModel)]="form.fecha"
+        presentation="date"
+        display-format="DD/MM/YYYY"
+        placeholder="Selecciona la fecha">
+      </ion-datetime>
+    </ion-datetime-button>
+  </ion-item>
+
+
+  <!-- Botón Guardar -->
+  <ion-button expand="block" class="ion-margin-top" (click)="guardar()">Guardar riesgo</ion-button>
+
+  <!-- Botón Cancelar -->
+  <ion-button fill="clear" color="dark" (click)="cancelar()">
+    ← Cancelar
+  </ion-button>
+
+</ion-content>
